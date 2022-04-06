@@ -5,13 +5,8 @@ import 'package:task/helpers/reusable_option_card.dart';
 import 'package:flutter_audio_recorder2/flutter_audio_recorder2.dart';
 
 class RecordFileView extends StatefulWidget {
-  final String recordPath;
-  final Function onSaved;
-
   const RecordFileView({
     Key? key,
-    required this.recordPath,
-    required this.onSaved,
   }) : super(key: key);
 
   @override
@@ -49,15 +44,14 @@ class _RecordFileViewState extends State<RecordFileView> {
               icon: myProvider.recordIcon,
               text: myProvider.recordText,
               onTap: () async {
-                await myProvider.onRecordButtonPressed(widget.onSaved, context);
-                setState(() {});
+                await myProvider.onRecordButtonPressed(myProvider.onRecordComplete, context);
               },
               iconColor: myProvider.iconColor,
             ),
             SizedBox(
               height: 20,
             ),
-            widget.recordPath.isEmpty
+            myProvider.recordPath.isEmpty
                 ? Center(child: Text('No records yet'))
                 : Container(
                     margin: EdgeInsets.symmetric(horizontal: 10),
@@ -66,7 +60,7 @@ class _RecordFileViewState extends State<RecordFileView> {
                         BoxDecoration(border: Border.all(color: Colors.black)),
                     child: ExpansionTile(
                       title: Text('Your Record'),
-                      subtitle: Text(myProvider.getDateFromFilePath(filePath: widget.recordPath)),
+                      subtitle: Text(myProvider.getDateFromFilePath(filePath: myProvider.recordPath)),
                       children: [
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -88,7 +82,7 @@ class _RecordFileViewState extends State<RecordFileView> {
                                       color: Colors.teal,
                                     ),
                               onPressed: () => myProvider.onPlay(
-                                  filePath: widget.recordPath),
+                                  filePath: myProvider.recordPath),
                             ),
                             SizedBox(
                               height: 10,

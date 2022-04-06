@@ -34,59 +34,59 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Task',
-          style: TextStyle(
-            fontSize: 25,
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Task',
+            style: TextStyle(
+              fontSize: 25,
+            ),
           ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      body: Consumer<FileRecorderController>(
-        builder: (context, myProvider, child) {
-          return Column(
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              RecordFileView(
-                recordPath: myProvider.recordPath,
-                onSaved: myProvider.onRecordComplete,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Divider(
-                color: Colors.green,
-                thickness: 1,
-                endIndent: 50,
-                indent: 50,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              FileView(),
-              Spacer(),
-              TextButton(
-                onPressed: () async{
-                 await myProvider.sendFiles();
-                },
-                style: TextButton.styleFrom(
-                    backgroundColor: Colors.teal, padding: EdgeInsets.all(10)),
-                child: Text(
-                  'Send Files',
-                  style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.white,
-                  ),
+        body: Column(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            RecordFileView(),
+            SizedBox(
+              height: 20,
+            ),
+            Divider(
+              color: Colors.green,
+              thickness: 1,
+              endIndent: 50,
+              indent: 50,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            FileView(),
+            Spacer(),
+            TextButton(
+              onPressed: () async {
+                var fileRecordProvider = Provider.of<FileRecorderController>(context, listen: false);
+                await fileRecordProvider.sendFiles();
+
+              },
+              style: TextButton.styleFrom(
+                  backgroundColor: Colors.teal, padding: EdgeInsets.all(10)),
+              child: Text(
+                'Send Files',
+                style: TextStyle(
+                  fontSize: 22,
+                  color: Colors.white,
                 ),
               ),
-              Spacer(),
-            ],
-          );
-        },
+            ),
+            Spacer(),
+          ],
+        ),
       ),
     );
   }

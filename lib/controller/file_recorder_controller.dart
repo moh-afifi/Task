@@ -15,7 +15,7 @@ enum RecordingState {
 
 class FileRecorderController extends ChangeNotifier {
   SendFiles _sendFiles = SendFiles();
-  bool isOffersLoading = false, isPlaying = false;
+  bool isPlaying = false;
   late int _totalDuration, _currentDuration;
   double completedPercentage = 0.0;
   IconData recordIcon = Icons.mic_none;
@@ -36,12 +36,9 @@ class FileRecorderController extends ChangeNotifier {
 
   //----------------------------------------------------
   Future<void> sendFiles() async {
-    isOffersLoading = true;
     List<String> filePaths = [];
     filePaths.addAll([file!.path, recordPath]);
     await _sendFiles.sendFiles(filePaths);
-    isOffersLoading = false;
-    notifyListeners();
   }
 
   //-------------------------------------------------------------------
