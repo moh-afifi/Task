@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:task/controller/file_recorder_controller.dart';
-import 'package:task/views/file/file_view.dart';
-import 'package:task/views/recorder/recorded_file_view.dart';
+import 'package:task/views/file_view.dart';
+import 'package:task/views/recorded_file_view.dart';
 
 class RecorderHomeView extends StatefulWidget {
   const RecorderHomeView({Key? key}) : super(key: key);

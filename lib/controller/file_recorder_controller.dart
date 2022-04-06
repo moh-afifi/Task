@@ -20,12 +20,11 @@ class FileRecorderController extends ChangeNotifier {
   double completedPercentage = 0.0;
   IconData recordIcon = Icons.mic_none;
   Color iconColor = Colors.teal;
-  String recordText = 'Click To Start';
+  String recordText = 'Click To Start',recordPath = '';
   RecordingState recordingState = RecordingState.UnSet;
   late FlutterAudioRecorder2 audioRecorder;
   File? file;
   late Directory appDirectory;
-  String recordPath = '';
   //----------------------------------------------------
   Future pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -38,8 +37,8 @@ class FileRecorderController extends ChangeNotifier {
   //----------------------------------------------------
   Future<void> sendFiles() async {
     isOffersLoading = true;
-    List<String> filePaths=[];
-    filePaths.addAll([file!.path,recordPath]);
+    List<String> filePaths = [];
+    filePaths.addAll([file!.path, recordPath]);
     await _sendFiles.sendFiles(filePaths);
     isOffersLoading = false;
     notifyListeners();
@@ -77,8 +76,7 @@ class FileRecorderController extends ChangeNotifier {
   //-------------------------------------------------------------------
   String getDateFromFilePath({required String filePath}) {
     String fromEpoch = filePath.substring(filePath.lastIndexOf('/') + 1, filePath.lastIndexOf('.'));
-    DateTime recordedDate =
-        DateTime.fromMillisecondsSinceEpoch(int.parse(fromEpoch));
+    DateTime recordedDate = DateTime.fromMillisecondsSinceEpoch(int.parse(fromEpoch));
     int year = recordedDate.year;
     int month = recordedDate.month;
     int day = recordedDate.day;
@@ -86,8 +84,7 @@ class FileRecorderController extends ChangeNotifier {
   }
 
   //-------------------------------------------------------------------
-  Future<void> onRecordButtonPressed(
-      Function onSaved, BuildContext context) async {
+  Future<void> onRecordButtonPressed(Function onSaved, BuildContext context) async {
     switch (recordingState) {
       case RecordingState.Set:
         await _recordVoice(context);
@@ -117,21 +114,14 @@ class FileRecorderController extends ChangeNotifier {
         break;
     }
   }
-
-  //-------------------------------------------------------------------
-  _initRecorder() async {
-    Directory appDirectory = await getApplicationDocumentsDirectory();
-    String filePath = appDirectory.path + '/' + DateTime.now().millisecondsSinceEpoch.toString() + '.aac';
-    audioRecorder = FlutterAudioRecorder2(filePath, audioFormat: AudioFormat.AAC);
-    await audioRecorder.initialized;
-    notifyListeners();
-  }
-
   //-------------------------------------------------------------------
   Future<void> _recordVoice(BuildContext context) async {
     final hasPermission = await FlutterAudioRecorder2.hasPermissions;
     if (hasPermission ?? false) {
-      await _initRecorder();
+      Directory appDirectory = await getApplicationDocumentsDirectory();
+      String filePath = appDirectory.path + '/' + DateTime.now().millisecondsSinceEpoch.toString() + '.aac';
+      audioRecorder = FlutterAudioRecorder2(filePath, audioFormat: AudioFormat.AAC);
+      await audioRecorder.initialized;
       await audioRecorder.start();
       recordingState = RecordingState.Recording;
       recordIcon = Icons.stop;
@@ -147,7 +137,8 @@ class FileRecorderController extends ChangeNotifier {
       );
     }
   }
-   //-------------------------------------------------------------------
+
+  //-------------------------------------------------------------------
   onRecordComplete() {
     List<String> tempRecord = [];
     appDirectory.list().listen((onData) {
@@ -158,4 +149,5 @@ class FileRecorderController extends ChangeNotifier {
       notifyListeners();
     });
   }
+  //-------------------------------------------------------------------
 }
