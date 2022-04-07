@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +16,7 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
   @override
   void initState() {
     super.initState();
-    var fileRecordProvider =
-        Provider.of<FileRecorderController>(context, listen: false);
+    var fileRecordProvider = Provider.of<FileRecorderController>(context, listen: false);
     getApplicationDocumentsDirectory().then((value) {
       fileRecordProvider.appDirectory = value;
     });
@@ -26,8 +24,7 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
 
   @override
   void dispose() {
-    var fileRecordProvider =
-        Provider.of<FileRecorderController>(context, listen: false);
+    var fileRecordProvider = Provider.of<FileRecorderController>(context, listen: false);
     fileRecordProvider.appDirectory.delete();
     super.dispose();
   }
@@ -70,9 +67,9 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
             Spacer(),
             TextButton(
               onPressed: () async {
-                var fileRecordProvider = Provider.of<FileRecorderController>(context, listen: false);
+                var fileRecordProvider =
+                    Provider.of<FileRecorderController>(context, listen: false);
                 await fileRecordProvider.sendFiles();
-
               },
               style: TextButton.styleFrom(
                   backgroundColor: Colors.teal, padding: EdgeInsets.all(10)),
