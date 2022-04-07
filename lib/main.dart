@@ -8,7 +8,8 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider<FileRecorderController>(
-            create: (_) => FileRecorderController()),
+            create: (_) => FileRecorderController(),
+        ),
       ],
       child: MyApp(),
     ),
